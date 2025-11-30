@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-// Importação segura para funcionar local e na web
-import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { ShoppingCart, Check, Trash2, Plus, X, Save, RefreshCw, Pencil, Store, Home, ListRestart, Search, Settings } from 'lucide-react';
 
 // --- CONFIGURAÇÃO DO SUPABASE ---
-const getEnv = (key) => { try { return import.meta.env[key]; } catch { return ''; } };
-const supabaseUrl = getEnv('VITE_SUPABASE_URL');
-const supabaseKey = getEnv('VITE_SUPABASE_ANON_KEY');
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 
 export default function App() {
@@ -40,7 +38,7 @@ export default function App() {
       const { data, error } = await supabase.from('produtos').select('*');
       if (error) throw error;
       setProducts(data || []);
-    } catch (error) { console.error(error); } finally { setLoading(false); }
+    } catch (error) { console.error('Erro:', error.message); } finally { setLoading(false); }
   };
 
   useEffect(() => {
